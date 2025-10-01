@@ -6,3 +6,7 @@ This patch is based on the revised patch found in https://github.com/issues/ment
 The main changes are:
 1. Users can configure which items to show in each of the left/centre/right areas
 2. The margins refresh if the display size changes (eg, resize window or orientation)
+
+Changes:
+1. Allow changes to the configuration by UI rather than file edits
+2. Factor the code to remove the huge amounts of duplication
