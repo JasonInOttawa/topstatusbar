@@ -10,3 +10,4 @@ The main changes are:
 Changes:
 1. Allow changes to the configuration by UI rather than file edits
 2. Factor the code to remove the huge amounts of duplication
+3. Add refresh to keep the clock / battery / wifi status up to date
