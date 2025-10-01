@@ -1,2 +1,8 @@
 # topstatusbar
 KOReader patch to add a top status bar
+
+This patch is based on the revised patch found in https://github.com/issues/mentioned?issue=joshuacant%7CKOReader.patches%7C1
+
+The main changes are:
+1. Users can configure which items to show in each of the left/centre/right areas
+2. The margins refresh if the display size changes (eg, resize window or orientation)
