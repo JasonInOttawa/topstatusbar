@@ -112,93 +112,41 @@ ReaderView.paintTo = function(self, bb, x, y)
         wifi = ""
     end
 
-    -- Define the content for each of the three header sections:
-    local left_header = ""
-    if left_config.time then
-        left_header = string.format("%s", time)
-    end
-    if left_config.book_author then
-        if left_header ~= "" then
-            left_header = left_header .. string.format(" %s ", separator)
+    local function getHeaderText(header_config, header_separator)
+        local header = ""
+        if header_config.time then
+            header = string.format("%s", time)
         end
-    	left_header = left_header .. string.format("%s", book_author)
-    end
-    if left_config.book_title then
-        if left_header ~= "" then
-            left_header = left_header .. string.format(" %s ", separator)
+        if header_config.book_author then
+            if header ~= "" then
+                header = header .. string.format(" %s ", header_separator)
+            end
+        	header = header .. string.format("%s", book_author)
         end
-    	left_header = left_header .. string.format("%s", book_title)
-    end
-    if left_config.wifi then
-        if left_header ~= "" then
-            left_header = left_header .. string.format(" %s ", separator)
+        if header_config.book_title then
+            if header ~= "" then
+                header = header .. string.format(" %s ", header_separator)
+            end
+        	header = header .. string.format("%s", book_title)
         end
-        left_header = left_header .. string.format("%s", wifi)
-    end
-    if left_config.battery then
-        if left_header ~= "" then
-            left_header = left_header .. string.format(" %s ", separator)
+        if header_config.wifi then
+            if header ~= "" then
+                header = header .. string.format(" %s ", header_separator)
+            end
+            header = header .. string.format("%s", wifi)
         end
-        left_header = left_header .. string.format("%s", battery_string)
+        if header_config.battery then
+            if header ~= "" then
+                header = header .. string.format(" %s ", header_separator)
+            end
+            header = header .. string.format("%s", battery_string)
+        end
+        return header
     end
 
-    local center_header = ""
-    if center_config.time then
-        center_header = string.format("%s", time)
-    end
-    if center_config.book_author then
-        if center_header ~= "" then
-            center_header = center_header .. string.format(" %s ", separator)
-        end
-    	center_header = center_header .. string.format("%s", book_author)
-    end
-    if center_config.book_title then
-        if center_header ~= "" then
-            center_header = center_header .. string.format(" %s ", separator)
-        end
-    	center_header = center_header .. string.format("%s", book_title)
-    end
-    if center_config.wifi then
-        if center_header ~= "" then
-            center_header = center_header .. string.format(" %s ", separator)
-        end
-        center_header = center_header .. string.format("%s", wifi)
-    end
-    if center_config.battery then
-        if center_header ~= "" then
-            center_header = center_header .. string.format(" %s ", separator)
-        end
-        center_header = center_header .. string.format("%s", battery_string)
-    end
-
-    local right_header = ""
-    if right_config.time then
-        right_header = string.format("%s", time)
-    end
-    if right_config.book_author then
-        if right_header ~= "" then
-            right_header = right_header .. string.format(" %s ", separator)
-        end
-    	right_header = right_header .. string.format("%s", book_author)
-    end
-    if right_config.book_title then
-        if right_header ~= "" then
-            right_header = right_header .. string.format(" %s ", separator)
-        end
-    	right_header = right_header .. string.format("%s", book_title)
-    end
-    if right_config.wifi then
-        if right_header ~= "" then
-            right_header = right_header .. string.format(" %s ", separator)
-        end
-        right_header = right_header .. string.format("%s", wifi)
-    end
-    if right_config.battery then
-        if right_header ~= "" then
-            right_header = right_header .. string.format(" %s ", separator)
-        end
-        right_header = right_header .. string.format("%s", battery_string)
-    end
+    local left_header = getHeaderText(left_config, separator)
+    local center_header = getHeaderText(center_config, separator)
+    local right_header = getHeaderText(right_config, separator)
 
     -- Calculate margins
     local margins = 0
