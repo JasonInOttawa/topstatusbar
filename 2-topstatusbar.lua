@@ -59,16 +59,18 @@ local header_margin = Size.padding.large -- Use this instead, if book margins is
 -- Minimum spacing between sections (in pixels)
 local min_section_spacing = 20
 
-local all_separators = {
-    bar     = "|",
-    bullet  = "•",
-    dot     = "·",
-    em_dash = "—",
-    en_dash = "-",
-}
-
 ReaderView.paintTo = function(self, bb, x, y)
-    local separator = all_separators.bullet
+
+    local function genSeparator()
+        local strings = {
+            bar    = " | ",
+            bullet = " • ",
+            dot    = " · ",
+        }
+        return strings[header_settings.items_separator]
+    end 
+
+    local separator = genSeparator()
     local hide_inactive_items = header_settings.hide_empty_generators
     local battery_threshold = header_settings.battery_hide_threshold
     ReaderView_paintTo_orig(self, bb, x, y)
