@@ -63,9 +63,9 @@ ReaderView.paintTo = function(self, bb, x, y)
 
     local function genSeparator()
         local strings = {
-            bar    = " | ",
-            bullet = " • ",
-            dot    = " · ",
+            bar    = "|",
+            bullet = "•",
+            dot    = "·",
         }
         return strings[header_settings.items_separator]
     end 
