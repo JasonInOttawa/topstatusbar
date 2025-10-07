@@ -67,9 +67,10 @@ local all_separators = {
     en_dash = "-",
 }
 
-local separator = all_separators.bullet
-
 ReaderView.paintTo = function(self, bb, x, y)
+    local separator = all_separators.bullet
+    local hide_inactive_items = header_settings.hide_empty_generators
+    local battery_threshold = header_settings.battery_hide_threshold
     ReaderView_paintTo_orig(self, bb, x, y)
     if self.render_mode ~= nil then return end -- Show only for epub-likes and never on pdf-likes
 
@@ -93,23 +94,29 @@ ReaderView.paintTo = function(self, bb, x, y)
     -- Battery:
     local battery_string = ""
     local powerd = Device.powerd
-    if powerd and powerd.getCapacity then
-        local batt_lvl = powerd:getCapacity()
-        if batt_lvl and batt_lvl >= 0 then
-            local batt_symbol = powerd:getBatterySymbol(powerd:isCharged(), powerd:isCharging(), batt_lvl)
-            battery_string = string.format("%s%d%%", batt_symbol, batt_lvl)
-            if powerd.isCharging and powerd:isCharging() then
-                battery_string = "+" .. battery_string
+    if Device:hasBattery() then
+        if powerd and powerd.getCapacity then
+            local batt_lvl = powerd:getCapacity()
+            if batt_lvl and batt_lvl < battery_threshold then
+                local batt_symbol = powerd:getBatterySymbol(powerd:isCharged(), powerd:isCharging(), batt_lvl)
+                battery_string = string.format("%s%d%%", batt_symbol, batt_lvl)
+                if powerd.isCharging and powerd:isCharging() then
+                    battery_string = "+" .. battery_string
+                end
             end
         end
     end
 
     -- set the wifi string
     local wifi = ""
-    if NetworkMgr:isWifiOn() then
-        wifi = ""
-    else
-        wifi = ""
+    if Device:hasFastWifiStatusQuery() then
+        if NetworkMgr:isWifiOn() then
+            wifi = ""
+        else
+            if hide_inactive_items == false then
+                wifi = ""
+            end
+        end
     end
 
     local function getHeaderText(header_config, header_separator)
@@ -135,7 +142,7 @@ ReaderView.paintTo = function(self, bb, x, y)
             end
             header = header .. string.format("%s", wifi)
         end
-        if header_config.battery then
+        if header_config.battery and battery_string ~= "" then
             if header ~= "" then
                 header = header .. string.format(" %s ", header_separator)
             end
