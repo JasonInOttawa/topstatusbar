@@ -7,6 +7,7 @@ local VerticalGroup = require("ui/widget/verticalgroup")
 local VerticalSpan = require("ui/widget/verticalspan")
 local HorizontalGroup = require("ui/widget/horizontalgroup")
 local HorizontalSpan = require("ui/widget/horizontalspan")
+local UIManager = require("ui/uimanager")
 local BD = require("ui/bidi")
 local Size = require("ui/size")
 local Geom = require("ui/geometry")
@@ -19,8 +20,10 @@ local NetworkMgr = require("ui/network/manager")
 local Screen = Device.screen
 local _ = require("gettext")
 local T = require("ffi/util").template
+local ReaderUI = require("apps/reader/readerui")
 local ReaderView = require("apps/reader/modules/readerview")
 local ReaderView_paintTo_orig = ReaderView.paintTo
+local _ReaderUI_init_orig = ReaderUI.init
 
 local header_settings = G_reader_settings:readSetting("footer")
 local screen_width = Screen:getWidth()
@@ -56,8 +59,16 @@ local header_top_padding = Size.padding.small -- replace small with default or l
 local header_use_book_margins = true -- Use same margins as book for header
 local header_margin = Size.padding.large -- Use this instead, if book margins is set to false
 
+-- Store the ReaderUI instance for refresh access
+local current_reader_ui = nil
+
 -- Minimum spacing between sections (in pixels)
 local min_section_spacing = 20
+
+local header_refresh_interval = 60 -- Refresh header every 60 seconds
+
+-- Store the ReaderUI instance for refresh access
+local current_reader_ui = nil
 
 ReaderView.paintTo = function(self, bb, x, y)
 
@@ -261,3 +272,24 @@ ReaderView.paintTo = function(self, bb, x, y)
     }
     header:paintTo(bb, x, y)
 end
+
+-- Auto-refresh functionality
+ReaderUI.init = function(self, ...)
+_ReaderUI_init_orig(self, ...)
+
+current_reader_ui = self
+
+-- Create a recurring task to force header refresh
+local function scheduleHeaderRefresh()
+    UIManager:scheduleIn(header_refresh_interval, function()
+        if current_reader_ui and current_reader_ui.view then
+            UIManager:setDirty(current_reader_ui, "partial")
+        end
+        scheduleHeaderRefresh()
+    end)
+end
+
+-- Start the refresh cycle
+scheduleHeaderRefresh()
+end
+
