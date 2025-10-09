@@ -258,7 +258,7 @@ ReaderView.paintTo = function(self, bb, x, y)
     
     dimen_refresh = Geom:new{ w = Screen:getWidth(), h = math.max(left_text_widget:getSize().h, center_text_widget:getSize().h, right_text_widget:getSize().h) }
     local header = CenterContainer:new {
-        dimen = Geom:new{ w = Screen:getWidth(), h = math.max(left_text_widget:getSize().h, center_text_widget:getSize().h, right_text_widget:getSize().h) },
+        dimen = dimen_refresh,
         VerticalGroup:new {
             VerticalSpan:new { width = header_top_padding },
             HorizontalGroup:new {
