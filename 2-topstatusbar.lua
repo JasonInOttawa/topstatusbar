@@ -61,6 +61,7 @@ local header_margin = Size.padding.large -- Use this instead, if book margins is
 
 -- Store the ReaderUI instance for refresh access
 local current_reader_ui = nil
+local dimen_refresh = nil
 
 -- Minimum spacing between sections (in pixels)
 local min_section_spacing = 20
@@ -255,6 +256,7 @@ ReaderView.paintTo = function(self, bb, x, y)
     -- Ensure minimum spacing, but use more if available
     local space_between = math.max(min_section_spacing, remaining_space / 2)
     
+    dimen_refresh = Geom:new{ w = Screen:getWidth(), h = math.max(left_text_widget:getSize().h, center_text_widget:getSize().h, right_text_widget:getSize().h) }
     local header = CenterContainer:new {
         dimen = Geom:new{ w = Screen:getWidth(), h = math.max(left_text_widget:getSize().h, center_text_widget:getSize().h, right_text_widget:getSize().h) },
         VerticalGroup:new {
@@ -283,7 +285,8 @@ current_reader_ui = self
 local function scheduleHeaderRefresh()
     UIManager:scheduleIn(header_refresh_interval, function()
         if current_reader_ui and current_reader_ui.view then
-            UIManager:setDirty(current_reader_ui, "partial")
+            logger.info("Updating top status bar h = " .. dimen_refresh.h .. " w = " .. dimen_refresh.w)
+            UIManager:setDirty(current_reader_ui, "partial", dimen_refresh)
         end
         scheduleHeaderRefresh()
     end)
