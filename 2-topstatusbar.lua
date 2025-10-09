@@ -72,7 +72,6 @@ local header_refresh_interval = 60 -- Refresh header every 60 seconds
 local current_reader_ui = nil
 
 ReaderView.paintTo = function(self, bb, x, y)
-    local header_settings = G_reader_settings:readSetting("footer")
 
     local function genSeparator()
         local strings = {
