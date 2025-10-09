@@ -72,6 +72,7 @@ local header_refresh_interval = 60 -- Refresh header every 60 seconds
 local current_reader_ui = nil
 
 ReaderView.paintTo = function(self, bb, x, y)
+    local header_settings = G_reader_settings:readSetting("footer")
 
     local function genSeparator()
         local strings = {
@@ -286,7 +287,14 @@ local function scheduleHeaderRefresh()
     local seconds = 61 - tonumber(os.date("%S"))
     logger.info("Update top status bar in " .. seconds .. " seconds")
     UIManager:scheduleIn(seconds, function()
-        if current_reader_ui and current_reader_ui.view then
+        local auto_refresh = header_settings.auto_refresh_time
+        logger.info("auto_refresh == " .. tostring(auto_refresh))
+        if auto_refresh then
+            logger.info ("UPDATE TOP STATUS BAR")
+        else
+            logger.info ("DO NOT UPDATE TOP STATUS BAR")
+        end
+        if current_reader_ui and current_reader_ui.view and auto_refresh then
             logger.info("Updating top status bar h = " .. dimen_refresh.h .. " w = " .. dimen_refresh.w)
             UIManager:setDirty(current_reader_ui, "partial", dimen_refresh)
         end
