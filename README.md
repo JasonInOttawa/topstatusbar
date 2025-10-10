@@ -6,11 +6,12 @@ This patch is based on the revised patch found in https://github.com/issues/ment
 <b>Changes from the Previous Patch</b>
 1. Users can configure which items to show in each of the left/centre/right areas
 2. The margins refresh if the display size changes (eg, resize window or orientation)
-3. If "Hide battery item when higher than: XXX" is selected in Status Bar settings, then the battery icon and text is not displayed unless the current charge is under the selected threshold
+3. If "Hide battery item when higher than: XXX" is selected in Status Bar settings, then the battery icon and text are not displayed unless the current charge is under the selected threshold
 4. If "Auto refresh items" is selected in Status Bar settings, then the status bar is redrawn at the top of each minute</br>
 5. If "Hide inactive items" is selected in Status Bar settings, then the wifi icon will only be displayed if wifi is turned on and connected<br>
+6. The separator is set to the same one as in the footer</br>
 
 <b>Future Changes</b>
 1. Allow changes to the configuration by UI rather than file edits
 2. Factor the code to remove the huge amounts of duplication
-3. Add refresh to keep the clock / battery / wifi status up to date
+3. Add refresh to keep the wifi status up to date
