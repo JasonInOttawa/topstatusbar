@@ -295,7 +295,7 @@ local function scheduleHeaderRefresh()
         end
         if current_reader_ui and current_reader_ui.view and auto_refresh then
             logger.info("Updating top status bar h = " .. dimen_refresh.h .. " w = " .. dimen_refresh.w)
-            UIManager:setDirty(current_reader_ui, "partial", dimen_refresh)
+            UIManager:setDirty(current_reader_ui, "fast", dimen_refresh)
         end
         scheduleHeaderRefresh()
     end)
