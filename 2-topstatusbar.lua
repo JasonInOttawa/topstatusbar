@@ -114,9 +114,6 @@ ReaderView.paintTo = function(self, bb, x, y)
             if batt_lvl and batt_lvl < battery_threshold then
                 local batt_symbol = powerd:getBatterySymbol(powerd:isCharged(), powerd:isCharging(), batt_lvl)
                 battery_string = string.format("%s%d%%", batt_symbol, batt_lvl)
-                if powerd.isCharging and powerd:isCharging() then
-                    battery_string = "+" .. battery_string
-                end
             end
         end
     end
