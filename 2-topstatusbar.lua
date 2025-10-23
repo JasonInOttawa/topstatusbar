@@ -281,17 +281,10 @@ current_reader_ui = self
 -- Create a recurring task to force header refresh
 local function scheduleHeaderRefresh()
     local seconds = 61 - tonumber(os.date("%S"))
-    logger.info("Update top status bar in " .. seconds .. " seconds")
     UIManager:scheduleIn(seconds, function()
         local auto_refresh = header_settings.auto_refresh_time
         logger.info("auto_refresh == " .. tostring(auto_refresh))
-        if auto_refresh then
-            logger.info ("UPDATE TOP STATUS BAR")
-        else
-            logger.info ("DO NOT UPDATE TOP STATUS BAR")
-        end
         if current_reader_ui and current_reader_ui.view and auto_refresh then
-            logger.info("Updating top status bar h = " .. dimen_refresh.h .. " w = " .. dimen_refresh.w)
             UIManager:setDirty(current_reader_ui, "fast", dimen_refresh)
         end
         scheduleHeaderRefresh()
