@@ -66,8 +66,6 @@ local dimen_refresh = nil
 -- Minimum spacing between sections (in pixels)
 local min_section_spacing = 20
 
-local header_refresh_interval = 60 -- Refresh header every 60 seconds
-
 -- Store the ReaderUI instance for refresh access
 local current_reader_ui = nil
 
